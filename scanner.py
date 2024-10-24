@@ -155,6 +155,10 @@ class MyLexer(object):
         t.valid = int(t.value)
         t.value = int(t.value)
         return t
+    def t_T_FloatConstant(self, t):
+         r'\d+\.\d+'
+         t.valid = float(t.value)
+         t.value = float(t.value)
   
     # def t_WHITESPACE(self, t):
     #     r'\s+'

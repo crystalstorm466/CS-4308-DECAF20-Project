@@ -6,7 +6,7 @@ from scanner import MyLexer
 
 
 precedence = {}
-
+#yeah this works -LT
 class myParser(object): 
     tokens = MyLexer.tokens
     def __init__(self, input_data):
@@ -23,12 +23,20 @@ class myParser(object):
     def p_statement_list(self, p):
         '''statement_list : statement statement_list
                      | empty '''
+        if len(p) == 2:  # Single statement
+            p[0] = p[1]  # Pass through
+        else:  # Multiple statements
+            p[0] = f"{p[1]} {p[2]}"  # Concatenate statements
         pass
     def p_parameter_list(self, p):
         '''parameter_list : T_Int T_IDENTIFIER
                         | empty '''
         pass
-      
+
+    def p_expression_list(self, p):
+        '''expression_list : expression
+                       | expression "," expression_list '''
+    pass      
 
     def p_statement(self, p):
         '''statement : expression ";"
@@ -36,7 +44,8 @@ class myParser(object):
                      | assignment ";"
                      | T_IDENTIFIER
                      | T_While "(" expression ")" "{" statement_list "}"
-                     | T_If "(" expression ")" "{" statement_list "}"
+                     | T_If if
+                     | T_If if_else_statement
                      | T_Return expression ";"
                      | function_declaration "(" expression ")"  "{" statement_list "}" ";"
                      | function_declaration "(" ")" ";"
@@ -53,29 +62,44 @@ class myParser(object):
                   | expression "/" expression
                   | expression "<" expression
                   | expression ">" expression
+                  | T_IDENTIFIER
                   | expression T_LessEqual expression
                   | expression T_GreaterEqual expression
                   | T_BoolConstant
-                  | "(" expression ")"'''
+                  | "(" expression ")"
+                  | "{" expression "}"'''
+        if len(p) == 4:
+            p[0] = f"{p[1]} = {p[3]}"
+        elif len(p) == 3:
+                if p[2] in ['+', '-', '*', '/', '<', '>', '<=', '>=']:
+                    p[0] = f"{p[1]} {p[2]} {p[3]}"
+                else:
+                    p[0] = p[2]
+        elif len(p) == 2:
+                p[0] = p[1]
         pass
+    def p_T_Print(self, p):
+        '''statement : T_Print "("  ")" ";"
+                    | T_Print "(" expression ")" ";"
+                    | T_Print "(" T_String ")" ";"
+                    | T_Print "(" T_Float ")" ";"
+                    | T_Print "(" T_Int ")" ";"
+                    | T_Print "(" T_BoolConstant ")" ";"
+                    | T_Print "(" T_IDENTIFIER ")" ";"'''
+        pass
+
     def p_T_IDENTIFIER(self, p):
         '''x : T_IDENTIFIER "(" ")" ";" 
                  | T_IDENTIFIER "(" expression_list ")" ";"
                  | T_IDENTIFIER "(" T_IDENTIFIER ")" ";"'''
         pass
 
-    def p_expression_list(self, p):
-        '''expression_list : expression
-                       | expression "," expression_list '''
-    pass
-
-    def p_if_statement(self, p):
-        '''if_statement : T_If "(" expression ")" "{" statement_list "}"
+    def p_T_If(self, p):
+        '''if : T_If "(" expression ")" "{" statement_list "}"
                         | T_If "(" expression ")" "{" statement_list "}" T_Else "{" statement_list "}"'''
         pass
     def p_if_else_statement(self, p):
-        '''if_else_statement : T_If "(" expression ")" "{" statement_list "}"
-                              | T_If "(" expression ")" "{" statement_list "}" T_Else "{" statement_list "}"'''
+        '''if_else_statement : T_If "(" expression ")" "{" statement_list "}" T_Else "{" statement_list "}"'''
         pass
     def p_T_Switch(self, p):
         '''switch : T_Switch "(" expression ")" "{" T_CaseList "}"
@@ -109,7 +133,7 @@ class myParser(object):
         'empty :'
         pass
 
-    def p_return(self, p):
+    def p_T_Return(self, p):
         '''return : T_Return expression ";"
                   | T_Return ";"'''
         pass
@@ -126,19 +150,14 @@ class myParser(object):
                        | T_Float T_IDENTIFIER ";"
                        | T_String T_IDENTIFIER ";"
                        | T_BoolConstant T_IDENTIFIER ";"
-                       | T_Int T_IDENTIFIER "=" T_Int ";"'''
+                       | T_Int T_IDENTIFIER "=" T_Int ";"
+                       | T_Int T_IDENTIFIER "=" T_Int "." T_Int ";"
+                       | T_Float T_IDENTIFIER "=" T_Float "." T_Int ";"
+                       | T_Float T_IDENTIFIER "=" T_Float ";"'''
         pass
 
   
-    def p_T_Print(self, p):
-        '''statement : T_Print "("  ")" ";"
-                    | T_Print "(" expression ")" ";"
-                    | T_Print "(" T_String ")" ";"
-                    | T_Print "(" T_Float ")" ";"
-                    | T_Print "(" T_Int ")" ";"
-                    | T_Print "(" T_BoolConstant ")" ";"
-                    | T_Print "(" T_IDENTIFIER ")" ";"'''
-        pass
+   
 
     def p_assignment(self, p):
         '''assignment  : T_IDENTIFIER "=" expression "=" ";"
@@ -173,12 +192,37 @@ class myParser(object):
                 error_len = len(p.value)
             else:
                     error_len = 1
-
-            print(f"*** Error line {line}.")
-            print(error_line)
-            print(" " * (col - 1) + "^" * error_len)
-            print("*** Syntax error")
-            #exit()
+            
+            if p.type == "T_ELSE":
+                print(f"*** Error line {line}")
+                print(f"{error_line}")
+                print(f" " * (col - 1) + "^" * error_len)
+                print(f"*** Syntax error")
+                exit()
+            elif p.type == 'T_IntConstant':
+                    max = 3
+                    invalid_seqeuence = self.input[col - 1:]
+                    for char in invalid_seqeuence:
+                        if char.isalnum or char in ['.', '_']:
+                            error_len += 1
+                            if error_len > max:
+                                error_len = max #so it wont spam 
+                                break
+                        else:
+                            break
+                    
+                    print(f"*** Error line {line}")
+                    print(f"{error_line}")
+                    print(f" " * (col - 1) + "^" * error_len )
+                    print(f"*** Syntax error")
+                    exit()
+            else:
+                 print(f"*** Error line {line}.")
+                 print(f"{self.input.splitlines()[p.lineno - 1]}")
+                 print(" " * (col - 1) + "^" * error_len) #this line is giving me trouble for bad4.decaf ^^^
+                 print("*** Syntax error")
+                 exit()
+           
         while True:
             tok = self.parser.token()
             if not tok or tok.type == ";":
