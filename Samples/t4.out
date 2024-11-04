@@ -1,0 +1,81 @@
+
+Program:
+1 	 VarDecl:
+ 		 Type: int
+1 		 Identifier: a
+2 	 FnDecl:
+ 		 (return type) Type: int
+2 		 Identifier: foo
+2 		 (formals) VarDecl:
+ 			 Type: int
+2 			 Identifier: a
+2 		 (formals) VarDecl:
+ 			 Type: bool
+2 			 Identifier: c
+ 		 (body) StmtBlock:
+ 			 IfStmt:
+3 				 (test)  FieldAccess:
+3 					 Identifier: c
+4 				 ReturnStmt:
+4 					 ArithmeticExpr:
+4 						  FieldAccess:
+4 							 Identifier: a
+4 						 Operator: +
+4 						 IntConstant: 2
+ 				 PrintStmt:
+6 					 (args) FieldAccess:
+6 						 Identifier: a
+6 					 (args) StringConstant: " wacky.\n"
+7 			 ReturnStmt:
+7 				 (args) IntConstant: 18
+10 	 FnDecl:
+ 		 (return type) Type: void
+10 		 Identifier: main
+ 		 (body) StmtBlock:
+11 			 VarDecl:
+ 				 Type: int
+11 				 Identifier: b
+13 			 AssignExpr:
+13 				  FieldAccess:
+13 					 Identifier: a
+13 				 Operator: =
+13 				 IntConstant: 10
+14 			 AssignExpr:
+14 				  FieldAccess:
+14 					 Identifier: b
+14 				 Operator: =
+14 				 ArithmeticExpr:
+14 					  FieldAccess:
+14 						 Identifier: a
+14 					 Operator: /
+14 					 IntConstant: 2
+15 			  Call:
+15 				 Identifier: foo
+15 				 (actuals)  FieldAccess:
+15 					 Identifier: a
+15 				 (args) BoolConstant: true
+16 			  Call:
+16 				 Identifier: foo
+16 				 (actuals) ArithmeticExpr:
+16 					  FieldAccess:
+16 						 Identifier: b
+16 					 Operator: +
+16 					 IntConstant: 2
+16 				 (actuals) RelationalExpr:
+16 					  FieldAccess:
+16 						 Identifier: a
+16 					 Operator: <=
+16 					  FieldAccess:
+16 						 Identifier: b
+17 			  Call:
+17 				 Identifier: foo
+17 				 (actuals)  Call:
+17 					 Identifier: foo
+17 					 (args) IntConstant: 3
+17 					 (actuals) LogicalExpr:
+17 						 BoolConstant: true
+17 						 Operator: &&
+17 						 BoolConstant: false
+17 				 (actuals) LogicalExpr:
+17 					 Operator: !
+17 					 BoolConstant: true

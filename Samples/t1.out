@@ -1,0 +1,54 @@
+
+Program:
+1 	 VarDecl:
+ 		 Type: int
+1 		 Identifier: c
+2 	 VarDecl:
+ 		 Type: int
+2 		 Identifier: d
+4 	 FnDecl:
+ 		 (return type) Type: void
+4 		 Identifier: main
+ 		 (body) StmtBlock:
+5 			 VarDecl:
+ 				 Type: int
+5 				 Identifier: c
+6 			 VarDecl:
+ 				 Type: string
+6 				 Identifier: s
+9 			 AssignExpr:
+9 				  FieldAccess:
+9 					 Identifier: s
+9 				 Operator: =
+9 				 StringConstant: "hello"
+10 			 AssignExpr:
+10 				  FieldAccess:
+10 					 Identifier: c
+10 				 Operator: =
+10 				  Call:
+10 					 Identifier: test
+10 					 (args) IntConstant: 4
+10 					 (args) IntConstant: 5
+ 			 PrintStmt:
+11 				 (args) FieldAccess:
+11 					 Identifier: c
+ 			 PrintStmt:
+12 				 (args) FieldAccess:
+12 					 Identifier: s
+15 	 FnDecl:
+ 		 (return type) Type: int
+15 		 Identifier: test
+15 		 (formals) VarDecl:
+ 			 Type: int
+15 			 Identifier: a
+15 		 (formals) VarDecl:
+ 			 Type: int
+15 			 Identifier: b
+ 		 (body) StmtBlock:
+16 			 ReturnStmt:
+16 				 ArithmeticExpr:
+16 					  FieldAccess:
+16 						 Identifier: a
+16 					 Operator: +
+16 					  FieldAccess:
+16 						 Identifier: b
