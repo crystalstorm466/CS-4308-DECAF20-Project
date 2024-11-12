@@ -28,6 +28,7 @@ class MyLexer(object):
         'switch': 'T_Switch',
         'case_list': 'T_CaseList',
         'default'  : 'T_Default',
+        'for' : 'T_For',
 
 
     }
@@ -40,6 +41,7 @@ class MyLexer(object):
         'T_IDENTIFIER',
         'T_STRINGCONSTANT',
         'T_CHARCONSTANT',
+        'T_FloatConstant',
         'T_IntConstant',
         'T_LeftShift',
         'T_RightShift',
@@ -82,9 +84,9 @@ class MyLexer(object):
         r'\&&'
         return t
    
-    # def t_T_BoolType(self, t):
-    #     r'\bool'
-    #     return t
+    def t_T_BoolType(self, t):
+        r'\bool'
+        return t
     
     def t_T_Void(self, t):
         r'void'
@@ -116,6 +118,9 @@ class MyLexer(object):
         return t
     def t_T_Else(self, t):
         r'else'
+        return t
+    def t_T_For(self, t):
+        r'for'
         return t
 
     def t_T_String(self, t):
