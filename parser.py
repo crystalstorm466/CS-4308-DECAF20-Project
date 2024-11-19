@@ -85,33 +85,6 @@ class myParser(object):
             node.add_child(assign_node)
         p[0] = node
 
-        # if len(p) == 5:
-        #     assign_node = Node("AssignExpr")
-        #     assign_node.add_child(Node("FieldAccess", Node("Identifier", p[2])))
-        #     assign_node.add_child(Node("Operator", "="))
-        #     assign_node.add_child(p[4])
-        #     node.add_child(assign_node)
-        # if len(p) == 8: #float declaration with decimals
-        #     p[0].add_child(Node("Type", p[1])) #T_Int or T_Float
-        #     p[0].add_child(Node("Identifier", p[2])) #variable name
-        #     p[0].add_child(Node("Assignment", p[3])) # "="
-        #     p[0].add_child(Node("Value", p[4])) #T_Int or T_Float
-        #     p[0].add_child(Node("Decimal", p[5])) #"."
-        #     p[0].add_child(Node("Fraction", p[6])) #T_Int
-        #     p[0].add_child(Node("";"", p[7])) #";"
-        # elif len(p) == 5: #int declaration
-        #     p[0].add_child(Node("Type", p[1])) #T_Int or T_Float
-        #     p[0].add_child(Node("Identifier", p[2])) #variable name
-        #     p[0].add_child(Node("Assignment", p[3])) # "="
-        #     p[0].add_child(Node("Value", p[4])) #T_Int or T_Float
-        # elif len(p) == 4: #variable declaration without assignment
-        #     p[0].add_child(Node("Type", p[1]))
-        #     p[0].add_child(Node("Identifier", p[2]))
-        #     p[0].add_child(Node("";"", p[3]))
-
-
-
-
     def p_assignment(self, p):
         '''assignment : T_IDENTIFIER "=" expression'''
         node = Node("AssignExpr", lineno=p.lineno(2))
@@ -121,35 +94,7 @@ class myParser(object):
         node.add_child(Node("Operator", p[2], p.lineno(2)))
         node.add_child(p[3])
         p[0] = node
-        
-        # if len(p) == 6: #float with decimals
-        #     p[0].add_child(Node("Identifier", p[1]))
-        #     p[0].add_child(Node("Equal", p[2]))
-        #     p[0].add_child(Node("Value", p[3]))
-        #     p[0].add_child(Node("Decimal", p[4]))
-        #     p[0].add_child(Node("Fraction", p[5]))
-        #     p[0].add_child(Node("";"", p[6]))
-        # elif len(p) == 5: #int assignment
-        #     p[0] = Node("Assignment")
-        #     p[0].add_child(Node("Identifier", p[1]))
-        #     p[0].add_child(Node("Equal", p[2]))
-        #     p[0].add_child(Node("Value", p[3]))
-        #     p[0].add_child(Node("";"", p[4]))
-        # elif len(p) == 7: #int assignment with subtraction
-        #     p[0] = Node("Assignment")
-        #     p[0].add_child(Node("Identifier", p[1]))
-        #     p[0].add_child(Node("Equal", p[2]))
-        #     p[0].add_child(Node("Value", p[3]))
-        #     p[0].add_child(Node("Subtraction", p[4]))
-        #     p[0].add_child(Node("Expression", p[5]))
-        #     p[0].add_child(Node("";"", p[6]))
-        # elif len(p) == 4: #function call assignment
-        #     p[0] = Node("Assignment")
-        #     p[0].add_child(Node("Identifier", p[1]))
-        #     p[0].add_child(Node("Equal", p[2]))
-        #     p[0].add_child(Node("FunctionCall", p[3]))
-        #     p[0].add_child(Node("";"", p[4]))
-        # return p[0]
+
 
     def p_expression(self, p):
         '''expression : expression "+" expression
@@ -325,23 +270,7 @@ class myParser(object):
         p[0] = node
 
 
-    # def p_T_IDENTIFIER(self, p):
-    #     '''x   : T_IDENTIFIER "(" ")" ";" 
-    #              | T_IDENTIFIER "(" expression_list ")" ";"
-    #              | T_IDENTIFIER "(" T_IDENTIFIER ")" ";"'''
-    #     if len(p) == 6:
-    #         p[0] = Node("Identifier", p[1])
-    #         p[0].add_child(Node("OpenParen", [p[2]])) # "("  
-    #         p[0].add_child(Node("expression_list", p[3])) # expression_list
-    #         p[0].add_childNode("CloseParen", [p[4]]) # ")"
-    #         p[0].add_child(Node("";"", p[5])) # ";"
-    #       #  p[0] = f"{p[1]}({p[3]})"
-    #     else:
-    #         p[0] = Node("Identifier", p[1])
-    #         p[0].add_child(Node("OpenParen", [p[2]])) # "("
-    #         p[0].add_child(Node("CloseParen", [p[3]])) # ")"
-    #         p[0].add_child(Node("";"", [p[4]])) # ";"
-    #         #p[0] = f"{p[1]}()"
+   
 
     def p_T_If(self, p):
         '''if : T_If "(" expression ")" statement
@@ -436,15 +365,7 @@ class myParser(object):
         body_node.add_child(p[6])
         node.add_child(body_node)
         p[0] = node
-        # if len(p) == 8:
-        #     p[0] = Node("WhileStatement", p[1])
-        #     p[0].add_child(Node("OpenParen", [p[2]]))
-        #     p[0].add_child(Node("expression", p[3]))
-        #     p[0].add_child(Node("CloseParen", p[4]))
-        #     p[0].add_child(Node("OpenBrace", p[5]))
-        #     p[0].add_child(Node("statement_list", p[6]))
-        #     p[0].add_child(Node("CloseBrace", p[7]))
-        # return p[0]
+       
 
     def p_for_loop(self, p):
         '''for_loop : T_For "(" assignment ";" expression ";" assignment ")" "{" statement_list "}"
