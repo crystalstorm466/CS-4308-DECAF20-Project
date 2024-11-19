@@ -1,0 +1,54 @@
+Program: 
+    StmtList: 
+        VarDecl: 
+            Type:  Type: int 
+
+            Identifier: c
+        VarDecl: 
+            Type:  Type: int 
+
+            Identifier: d
+        FnDecl: 
+            Type:  Type: void 
+
+            Identifier: main
+            Body: 
+                StmtList: 
+                    VarDecl: 
+                        Type:  Type: int 
+
+                        Identifier: c
+                    VarDecl: 
+                        Type:  Type: string 
+
+                        Identifier: s
+                    AssignExpr: 
+                        FieldAccess: 
+                            Identifier: s
+                        Operator: =
+                        Literal: "hello"
+                    AssignExpr: 
+                        FieldAccess: 
+                            Identifier: c
+                        Operator: =
+                        Literal: 10 FunctionCall: test 
+10 	(args):  
+ 		ExprList:  
+10 			Literal: 4 
+ 			ExprList:  
+10 				Literal: 5 
+
+                    PrintStmt: 
+                        Literal: Print
+                        Literal: c
+                    PrintStmt: 
+                        Literal: Print
+                        Literal: s
+        FnDecl: 
+            Type:  Type: int 
+
+            Identifier: test
+            Parameters: 
+            Body: 
+                StmtList: 
+                    Literal: return

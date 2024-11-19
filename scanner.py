@@ -23,20 +23,22 @@ class MyLexer(object):
         'package': 'T_Package',
         'void': 'T_Void',
         'while': 'T_While',
+        'switch': 'T_Switch',
+        'case': 'T_CaseKeyword',
+        'default'  : 'T_DefaultKeyword',
+        'for' : 'T_For',
         'true': 'T_BoolConstant',
         'false': 'T_BoolConstant',
-        'switch': 'T_Switch',
-        'case_list': 'T_CaseList',
-        'default'  : 'T_Default',
-        'for' : 'T_For',
+        'Print' : 'T_Print',
+        'bool' : 'T_Bool',
 
 
     }
 
     tokens = [
-        'T_logicaland',
         'T_Assign',
         'T_BoolType',
+        'T_Bool',
         'T_Comment',
         'T_IDENTIFIER',
         'T_STRINGCONSTANT',
@@ -55,7 +57,15 @@ class MyLexer(object):
         'T_Main',
         'T_GreaterEqual',
         'T_LessEqual',
-        'T_Float'
+        'T_LogicalAnd',
+        'T_LogicalOr',
+        'T_LessThan',
+        'T_GreaterThan',
+        'T_Equals',
+        'T_NotEquals',
+        'T_Float',
+        'T_CaseKeyword',
+        'T_DefaultKeyword',
     ] + list(reserved.values())
 
 
@@ -67,25 +77,32 @@ class MyLexer(object):
     '!',
     '*',
     '/',
-    '<',
-    '>',
     '=',
     '(',
     ')',
     ';',
     '%',
     ',',
+    ':'
     ]
     
     t_ignore = ' \t'
 
 
-    def t_T_logicaland (self, t):
+    def t_T_LogicalAnd (self, t):
         r'\&&'
         return t
-   
-    def t_T_BoolType(self, t):
-        r'\bool'
+    def t_T_LogicalOr(self, t):
+        r'\|\|'
+        return t
+    def t_T_Not (self, t):
+        r'\!'
+        return t
+    def t_T_CaseKeyword(self, t):
+        r'case'
+        return t
+    def t_T_DefaultKeyword(self, t):
+        r'default'
         return t
     
     def t_T_Void(self, t):
@@ -95,9 +112,10 @@ class MyLexer(object):
         r'Print'
         return t
     def t_T_IDENTIFIER(self, t):
-        r'\b[a-zA-Z_][a-zA-Z0-9_]*!?'
-        t.type = self.reserved.get(t.value, 'T_IDENTIFIER')
+        r'[a-zA-Z_][a-zA-Z0-9_]*'
+        t.type = self.reserved.get(t.value, 'T_IDENTIFIER')  # Check reserved keywords
         return t
+
 
     def t_T_LEFTSHIFT(self, t):
         r'\<\<'
@@ -109,6 +127,19 @@ class MyLexer(object):
         r'<='
         t.type = 'T_LessEqual'
         return t
+    def t_T_LessThan(self, t):
+        r'<'
+        return t
+    def t_T_GreaterThan(self, t):
+        r'>'
+        return t
+    def t_T_Equals(self, t):
+        r'=='
+        return t
+    def t_T_NotEquals(self, t):
+        r'!='
+        return t
+    
     def t_T_GreaterEqual(self, t):
         r'>='
         t.type = 'T_GreaterEqual'
@@ -134,7 +165,10 @@ class MyLexer(object):
         t.value = t.value
         return t
     def t_T_BoolConstant(self, t):
-        r'(true|false)'
+        r'(true|false)\b'
+        return t
+    def t_T_Bool(self, t):
+        r'bool'
         return t
     
 

@@ -22,21 +22,7 @@ Samples/t3.decaf - Sample input 3 (Provided by Instructor)
 
 Samples/t4.decaf - Sample input	4 (Provided by Instructor)
 
-Samples/bad1.decaf -  Sample input 1 (Provided by Instructor)
-
-Samples/bad3.decaf -  Sample input 3 (Provided by Instructor)
-
-Samples/bad4.decaf -  Sample input 4 (Provided by Instructor)
-
-Samples/bad6.decaf -  Sample input 6 (Provided by Instructor)
-
-Samples/bad1.out -  Sample output of bad1.decaf (Provided by Instructor)
-
-Samples/bad3.out -  Sample output of bad3.dcaf (Provided by Instructor)
-
-Samples/bad4.out -  Sample output of bad3.deaf (Provided by Instructor)
-
-Samples/bad6.out -  Sample output of bad5.decaf (Provided by Instructor)
+parser_output.out - Output of parser.py in ASCII text.
 
 
 
